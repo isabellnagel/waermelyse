@@ -1,0 +1,10 @@
+
+
+machine_learning/roof_indentification/Data/ 
+# Ignore compiled files
+*.o
+*.class
+*.log
+
+# Ignore environment files
+.env

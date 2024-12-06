@@ -7,4 +7,4 @@ machine_learning/roof_indentification/Data/
 *.log
 
 # Ignore environment files
-.env
+/.venv311/

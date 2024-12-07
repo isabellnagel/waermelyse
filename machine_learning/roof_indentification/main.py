@@ -26,7 +26,8 @@ model = tf.keras.models.load_model(model_path)
 print(model.summary())
 
 pred_list = []
-image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\roof_indentification\data\train\images\000000000012.jpg"
+#image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\roof_indentification\data\train\images\000000000012.jpg"
+image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\wms_output\tile_488640_5881989_highres.jpg"
 image = cv2.imread(image_path)
 image = cv2.resize(image, (256, 256))
 pred_list.append(image)

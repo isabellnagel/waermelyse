@@ -27,12 +27,25 @@ print(model.summary())
 
 pred_list = []
 #image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\roof_indentification\data\train\images\000000000012.jpg"
-image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\wms_output\tile_488640_5881989_highres.jpg"
+image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\wms_output\tile_489348_5881989_highres.jpg"
 image = cv2.imread(image_path)
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+plt.imshow(image_rgb)
+plt.title("Original 8192 x 8192 Pixel")
+plt.show()
+
 image = cv2.resize(image, (256, 256))
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+plt.title("Resized 256 x 256 Pixel")
+plt.imshow(image_rgb)
+plt.show()
+#plt.imshow(image)
 pred_list.append(image)
 pred_list = np.array(pred_list) / 255.0
-
+image_normalized_rgb = cv2.cvtColor(pred_list[0].astype(np.float32), cv2.COLOR_BGR2RGB)
+plt.title("Normiert 256 x 256 Pixel")
+plt.imshow(image_normalized_rgb)
+plt.show()
 print(f"Input shape: {pred_list.shape}")
 print(f"Expected input shape: {model.input_shape}")
 #pred_list = np.expand_dims(image, axis=0)  # Add batch dimension
@@ -54,17 +67,18 @@ processed_predictions = post_process(predictions, threshold=0.5)
 
 #np.argsort(accuracies)[:10]
 
-fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+fig, axes = plt.subplots(1, 2, figsize=(12, 8))
 
 # Original image (ensure it has RGB format if needed)
-axes[0].imshow(pred_list[0])  # Assumes pred_list[0] is in the correct format
-axes[0].set_title('Original Image')
+
+axes[0].imshow(image_rgb)  # Assumes pred_list[0] is in the correct format
+axes[0].set_title('Originales Bild')
 axes[0].axis('off')
 
 # Prediction (ensure the mask is properly scaled or processed)
 axes[1].imshow(processed_predictions[0], cmap='gray')  # Assumes processed_predictions[0] is 2D
-axes[1].set_title('Predicted Mask')
+axes[1].set_title('Vorhergesagte Maske')
 axes[1].axis('off')
 
-plt.tight_layout()
+#plt.tight_layout()
 plt.show()

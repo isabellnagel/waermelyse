@@ -1,7 +1,9 @@
 
 
 machine_learning/roof_indentification/Data/
- machine_learning/wms_output/
+machine_learning/roof_indentification/Mask_RCNN
+machine_learning/wms_output/
+
 # Ignore compiled files
 *.o
 *.class

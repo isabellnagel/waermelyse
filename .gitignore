@@ -9,3 +9,4 @@ machine_learning/roof_indentification/Data/
 
 # Ignore environment files
 /.venv311/
+/.venv37/

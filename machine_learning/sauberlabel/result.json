@@ -4,37 +4,37 @@
       "width": 320,
       "height": 320,
       "id": 0,
-      "file_name": "images\\5b9bab13-tile_488608_5881989_png.png"
+      "file_name": "5b9bab13-tile_488608_5881989_png.png"
     },
     {
       "width": 320,
       "height": 320,
       "id": 1,
-      "file_name": "images\\eb882ae0-tile_488640_5881989_png.png"
+      "file_name": "eb882ae0-tile_488640_5881989_png.png"
     },
     {
       "width": 320,
       "height": 320,
       "id": 2,
-      "file_name": "images\\b3ef7b4b-tile_488673_5881989_png.png"
+      "file_name": "b3ef7b4b-tile_488673_5881989_png.png"
     },
     {
       "width": 320,
       "height": 320,
       "id": 3,
-      "file_name": "images\\e8f74d79-tile_488705_5881989_png.png"
+      "file_name": "e8f74d79-tile_488705_5881989_png.png"
     },
     {
       "width": 320,
       "height": 320,
       "id": 4,
-      "file_name": "images\\d6984080-tile_488737_5881989_png.png"
+      "file_name": "d6984080-tile_488737_5881989_png.png"
     }
   ],
   "categories": [
     {
       "id": 0,
-      "name": "D\u00e4cher"
+      "name": "roofs"
     }
   ],
   "annotations": [

@@ -11,4 +11,4 @@ machine_learning/wms_output/
 
 # Ignore environment files
 /.venv311/
-/.venv37/
+/myenv/

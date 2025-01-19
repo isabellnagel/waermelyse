@@ -1,5 +1,9 @@
 import streamlit as st
+from machine_learning.roof_indentification.modelling import SetupConfig
 
+
+config_new = SetupConfig()
+config_new.display()
 # App Header
 app_header = "Wärmylator"
 st.header(app_header)

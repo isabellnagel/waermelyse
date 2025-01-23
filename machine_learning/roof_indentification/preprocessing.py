@@ -62,9 +62,11 @@ class CustomDataset(Dataset):
     def load_data(self):
         # Add only 'Dächer' class to the dataset
         for category in self.coco.dataset['categories']:
-            if category['name'] == 'roofs':  # Only add 'Dächer' class
+            if category['name'] == 'trees':  # Only add 'Dächer' class
+                print(category["name"])
+                print("done")
                 self.add_class("dataset", category['id'], category['name'])
-        print("Classes added to dataset:", self.class_info)  # Debugging line
+        print("Classes added to dataseeeet:", self.class_info)  # Debugging line
 
         # Add images to the dataset
         image_ids = self.coco.getImgIds()  # Get all image IDs in the dataset

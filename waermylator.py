@@ -8,6 +8,7 @@ from tiff_to_png import split_tif_to_tiles
 from wmsdownload import download_image
 from machine_learning.roof_indentification.modelling import SetupConfig
 from machine_learning.roof_indentification.modelling import process_folder_and_save
+from machine_learning.Georeferencing_WMS.georeferencing_wms import create_geojson
 import sys
 import nbimporter
 import skimage.io
@@ -171,21 +172,35 @@ with DOP_tab:
 # Content in ML tab
 with ml_tab:
     st.subheader("KI-Erkennung")
-    detecting_object = st.radio("1. Wähle das zu erkennende Objekt", ["Bäume", "Dächer"])
-    config = SetupConfig()
-    #config.display()
-    COCO_MODEL_PATH = os.path.join(working_dir,"coco20250116T1546", "mask_rcnn_coco_0010.h5")
-    ROOT_DIR = os.path.join(working_dir,"model")
-    st.info("loading mask R-CNN model")
-    model = modellib.MaskRCNN(mode="inference", config=config, model_dir=ROOT_DIR)
-    #-------------- Load weights trained on MS-COCO -------------------------------
-    model.load_weights(COCO_MODEL_PATH, by_name=True)
+    detecting_object = st.multiselect("1. Wähle das zu erkennende Objekt", ["Bäume", "Dächer"])
 
-    # Folder containing images
+    start_modell = st.button("Starte Modellerkennung")
     input_folder = r"C:\Users\MSI\Uni\master_projekt\waermelyse\machine_learning\320x320_Annotationen\valid_dataset\images"
-    # Output JSON file
-    output_json = "output_predictions.json"
-    process_folder_and_save(input_folder, model, output_json)
+    # Folder containing images
+    if start_modell:
+        # Output JSON file
+        config = SetupConfig()
+            #config.display()
+        COCO_MODEL_PATH = os.path.join(working_dir,"coco20250116T1546", "mask_rcnn_coco_0010.h5")
+        ROOT_DIR = os.path.join(working_dir,"model")
+        st.info("Lade KI-Modell...")
+        model = modellib.MaskRCNN(mode="inference", config=config, model_dir=ROOT_DIR)
+        #-------------- Load weights trained on MS-COCO -------------------------------
+        model.load_weights(COCO_MODEL_PATH, by_name=True)
+        output_json = "output_predictions.json"
+        st.info("Starte die Erkennung...")
+        process_folder_and_save(input_folder, model, output_json)
+        st.success("Erkennung abgeschlossen!")
+        st.info("Starte die Georeferenzierung...")
+        # Verwendung der Funktion
+        model_output_file = r'C:\Users\MSI\Uni\master_projekt\waermelyse\machine_learning\roof_indentification\output_predictions_roofs.json'
+        metadata_file = r'C:\Users\MSI\Uni\master_projekt\waermelyse\machine_learning\Georeferencing_WMS\metadata.json'  # Hier auf die große JSON-Datei verweisen
+        geojson_result = create_geojson(model_output_file, metadata_file)
+
+        # Speichern der GeoJSON-Datei
+        with open('roofs_georeferenced_app.geojson', 'w') as f:
+            json.dump(geojson_result, f)
+        st.success("Georeferenzierung abgeschlossen!")
 
     # Verarbeite hochgeladene Satellitenbilder
     if "uploaded_files" in st.session_state and st.session_state["uploaded_files"]:

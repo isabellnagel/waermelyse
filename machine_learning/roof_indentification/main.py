@@ -27,7 +27,7 @@ print(model.summary())
 
 pred_list = []
 #image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\roof_indentification\data\train\images\000000000012.jpg"
-image_path = r"C:\Users\Isabell\master_projekt\waermelyse\machine_learning\wms_output\tile_489348_5881989_highres.jpg"
+image_path = r"C:\Users\bilge\OneDrive\Masaüstü\waermelyse\machine_learning\wms_output\tile_489348_5881989_highres.jpg"
 image = cv2.imread(image_path)
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 plt.imshow(image_rgb)

@@ -100,7 +100,7 @@ with DOP_tab:
                             if layer.find("Name") is not None
                         ]
                         st.session_state["wms_layers"] = layers
-                        st.success(f"{len(layers)} Layer erfolgreich abgerufen!")
+                        #st.success(f"{len(layers)} Layer erfolgreich abgerufen!")
                     else:
                         st.error(f"Fehler beim Abrufen der Layer: HTTP {response.status_code}")
                 except Exception as e:
@@ -163,51 +163,54 @@ with DOP_tab:
 with ml_tab:
     st.subheader("KI-Erkennung")
     image_dir = st.text_input("Gib das Verzeichnis der Bilder zur Verarbeitung an:")
-    detecting_object = st.multiselect("1. Wähle das zu erkennende Objekt", ["Bäume", "Dächer"])
-
-    # Festlegen des Modelltyps basierend auf der Auswahl
-    model_type = "roof" if "Dächer" in detecting_object else "tree"
+    detecting_objects = st.multiselect("1. Wähle das zu erkennende Objekt", ["Bäume", "Dächer"])
 
     if image_dir and os.path.exists(image_dir) and st.button("Starte Modellerkennung"):
         config = SetupConfig()
+        combined_results = []
 
-        # Dynamische Festlegung des Modellpfads
-        COCO_MODEL_PATH = os.path.join(working_dir, "gewichte_modell", model_type, f"mask_rcnn_coco_00{'10' if model_type == 'roof' else '05'}.h5")
+        for obj in detecting_objects:
+            model_type = "roof" if obj == "Dächer" else "tree"
+            st.info(f"Lade Modell für {obj}...")
 
-        # Überprüfen, ob die .h5-Datei existiert
-        if os.path.exists(COCO_MODEL_PATH):
-            st.info("Lade KI-Modell...")
+            # Dynamische Festlegung des Modellpfads
+            COCO_MODEL_PATH = os.path.join(working_dir, "gewichte_modell", model_type, f"mask_rcnn_coco_00{'10' if model_type == 'roof' else '05'}.h5")
 
-            ROOT_DIR = os.path.join(working_dir, "model")
-            model = modellib.MaskRCNN(mode="inference", config=config, model_dir=ROOT_DIR)
+            if os.path.exists(COCO_MODEL_PATH):
+                ROOT_DIR = os.path.join(working_dir, "model")
+                model = modellib.MaskRCNN(mode="inference", config=config, model_dir=ROOT_DIR)
+                model.load_weights(COCO_MODEL_PATH, by_name=True)
 
-            # Laden der Modellgewichte
-            model.load_weights(COCO_MODEL_PATH, by_name=True)
+                output_json = os.path.join(image_dir, f"output_predictions_{model_type}.json")
+                st.info(f"Starte die Erkennung für {obj}...")
 
-            output_json = os.path.join(image_dir, "output_predictions.json")
-            st.info("Starte die Erkennung...")
+                process_folder_and_save(image_dir, model, output_json)
 
-            process_folder_and_save(image_dir, model, output_json)
-            st.success("Erkennung abgeschlossen!")
+                # Ergebnisse sammeln
+                with open(output_json, 'r') as f:
+                    results = json.load(f)
+                    combined_results.extend(results)
 
-            st.info("Starte die Georeferenzierung...")
-            
-            # Metadaten-Datei aus demselben Verzeichnis laden
-            metadata_file = os.path.join(image_dir, "metadata.json")
-            
-            if os.path.exists(metadata_file):
-                geojson_result = create_geojson(output_json, metadata_file)
+                st.success(f"Erkennung für {obj} abgeschlossen!")
 
-                # Speichern der GeoJSON-Datei im gleichen Verzeichnis
-                output_geojson_path = os.path.join(image_dir, "georeferenced_results.geojson")
-                with open(output_geojson_path, 'w') as f:
-                    json.dump(geojson_result, f)
+                st.info("Starte die Georeferenzierung...")
 
-                st.success(f"Georeferenzierung abgeschlossen! Datei gespeichert unter: {output_geojson_path}")
+                # Metadaten-Datei aus demselben Verzeichnis laden
+                metadata_file = os.path.join(image_dir, "metadata.json")
+                
+                if os.path.exists(metadata_file):
+                    geojson_result = create_geojson(output_json, metadata_file)
+
+                    # Speichern der GeoJSON-Datei im gleichen Verzeichnis
+                    output_geojson_path = os.path.join(image_dir, f"georeferenced_results_{model_type}.geojson")
+                    with open(output_geojson_path, 'w') as f:
+                        json.dump(geojson_result, f)
+
+                    st.success(f"Georeferenzierung abgeschlossen! Datei gespeichert unter: {output_geojson_path}")
+                else:
+                    st.error(f"Metadaten-Datei {metadata_file} nicht gefunden! Bitte überprüfe das Verzeichnis.")
             else:
-                st.error(f"Metadaten-Datei {metadata_file} nicht gefunden! Bitte überprüfe das Verzeichnis.")
-        else:
-            st.error(f"Die Datei {COCO_MODEL_PATH} existiert nicht! Bitte überprüfe den Pfad.")
+                st.error(f"Das Modell für {obj} ({COCO_MODEL_PATH}) wurde nicht gefunden!")
 
 with geodata_tab:
     st.info("Lade alle Geodaten hoch")

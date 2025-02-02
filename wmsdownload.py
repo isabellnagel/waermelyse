@@ -6,6 +6,7 @@ from io import BytesIO
 
 # Speicherort für Bilder
 DOWNLOAD_DIR = "wms_tiles"
+MAX_TILES = 30  # Maximale Anzahl an Bildern und Metadaten
 
 def ensure_directory(directory):
     """Stellt sicher, dass das Verzeichnis existiert."""
@@ -29,6 +30,9 @@ def download_image(wms_url, layer, bbox, tile_size=(320, 320), crs="EPSG:25832",
     num_tiles_x = int(bbox_width / (tile_size[0] * resolution))
     num_tiles_y = int(bbox_height / (tile_size[1] * resolution))
 
+    # Begrenzung auf maximal 30 Kacheln
+    max_tiles = min(num_tiles_x * num_tiles_y, MAX_TILES)
+
     # Breite und Höhe jeder Kachel in Metern
     tile_width = bbox_width / num_tiles_x
     tile_height = bbox_height / num_tiles_y
@@ -37,9 +41,13 @@ def download_image(wms_url, layer, bbox, tile_size=(320, 320), crs="EPSG:25832",
     ensure_directory(DOWNLOAD_DIR)
 
     metadata_list = []
+    tile_count = 0 #zur Begrenzung der Downloadmenge
 
     for i in range(num_tiles_y):
         for j in range(num_tiles_x):
+            if tile_count >= max_tiles: #Begrenzung der Downloadgröße
+                break
+
             tile_bbox = (
                 bbox[0] + j * tile_width,
                 bbox[1] + i * tile_height,
@@ -71,6 +79,8 @@ def download_image(wms_url, layer, bbox, tile_size=(320, 320), crs="EPSG:25832",
                 "crs": crs,
                 "resolution": resolution
             })
+
+            tile_count += 1 #Begrenzung der Größe
 
     # Metadaten als JSON speichern
     save_all_metadata(metadata_list, os.path.join(DOWNLOAD_DIR, "metadata.json"))

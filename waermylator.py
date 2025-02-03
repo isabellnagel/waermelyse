@@ -137,14 +137,14 @@ with DOP_tab:
                 except Exception as e:
                     st.error(f"Ein Fehler ist aufgetreten: {e}")
         
-        elif data_source == "Satellitenbilder (Verzeichnis)":
+        elif data_source == "Satellitenbilder":
             image_dir = st.text_input("Gib das Verzeichnis mit Satellitenbildern an:")
             if image_dir and os.path.exists(image_dir):
                 st.success(f"Satellitenbilder werden aus {image_dir} geladen.")
             else:
                 st.warning("Gültiges Verzeichnis angeben.")
         
-        elif data_source == "GeoTIFF (Verzeichnis)":
+        elif data_source == "GeoTIFF":
             geotiff_dir = st.text_input("Gib das Verzeichnis mit GeoTIFF-Dateien an:")
             output_folder = os.path.join(geotiff_dir, "tiles")
             

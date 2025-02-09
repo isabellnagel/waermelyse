@@ -3,16 +3,17 @@
 ## Kurzbeschreibung
 
 Dieses Repository enthält Skripte zu **Tranfer Learning**, um anhand Satellitenbildern **Dächer und Bäume zu erkennen**, sowie aus **ArcGIS Pro** exportierten Code, welche **Open Source übersetzt** wurde, um Geothermie und Solarenergie **Potenzialflächen** zu analysieren.
-Der Quellecode wurde in eine webbasierte streamlit app verpackt.
+Der Quellcode wurde in eine webbasierte streamlit app verpackt.
 
 ## Voraussetzungen
 - Python 3.7.3
 - Wenn Pip und requirements.txt benutze wird: Pip 21.0 für psutil, ansonsten Pip 19.0.3
 - Zusätzlich zu Requirements.txt: Matterports Mask-RCNN [https://github.com/matterport/Mask_RCNN]
+- es wird empfohlen mit einer virtual environment zu arbeiten
 
 ## Struktur
 - Übersetzug der Potenzialflächenanalyse: waermelyse\GIS
-- Transfer Learning: waermelyse\roof_indentification
+- Transfer Learning: waermelyse\machine_learning\roof_indentification
 - Streamlit App: waermelyse\waermylator.py
 
 ## Benutzung der App

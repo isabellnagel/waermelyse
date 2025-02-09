@@ -5,6 +5,7 @@ machine_learning/roof_indentification/coco*
 machine_learning/roof_indentification/Mask_RCNN
 machine_learning/wms_output/
 machine_learning/Georeferencing_WMS/
+machine_learning/roof_indentification/tif_output_trees
 
 # Ignore compiled files
 *.o

@@ -27,7 +27,7 @@ mask_rcnn_dir = os.path.join(working_dir, "Mask_RCNN")
 modelling_py = os.path.join(working_dir, "modelling.py")
 print(modelling_py)
 sys.path.append(modelling_py)
-sys.path.append(r"C:\\Users\\bilge\\OneDrive\\Masaüstü\\waermelyse\\machine_learning\\roof_indentification\\modelling.py")
+#sys.path.append(r"C:\\Users\\bilge\\OneDrive\\Masaüstü\\waermelyse\\machine_learning\\roof_indentification\\modelling.py")
 if mask_rcnn_dir in working_dir:
     pass
 else:

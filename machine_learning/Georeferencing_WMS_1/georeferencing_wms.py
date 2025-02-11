@@ -95,10 +95,10 @@ def create_geojson(model_output_file, metadata_file):
 
 
 # Verwendung der Funktion
-model_output_file = r'C:\Users\bilge\OneDrive\Masaüstü\waermelyse\machine_learning\roof_indentification\output_predictions_roofs.json'
-metadata_file = r'C:\Users\bilge\OneDrive\Masaüstü\waermelyse\machine_learning\Georeferencing_WMS_1\metadata.json'  # Hier auf die große JSON-Datei verweisen
-geojson_result = create_geojson(model_output_file, metadata_file)
+#model_output_file = r'C:\Users\bilge\OneDrive\Masaüstü\waermelyse\machine_learning\roof_indentification\output_predictions_roofs.json'
+#metadata_file = r'C:\Users\bilge\OneDrive\Masaüstü\waermelyse\machine_learning\Georeferencing_WMS_1\metadata.json'  # Hier auf die große JSON-Datei verweisen
+#geojson_result = create_geojson(model_output_file, metadata_file)
 
 # Speichern der GeoJSON-Datei
-with open('roofs_georeferenced.geojson', 'w') as f:
-    json.dump(geojson_result, f)
+#with open('roofs_georeferenced.geojson', 'w') as f:
+    #json.dump(geojson_result, f)
